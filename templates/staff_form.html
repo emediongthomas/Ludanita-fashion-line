@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit staff login" if staff_user else "Add staff login" }} · Ludanita{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div>
+    <div class="eyebrow">ADMINISTRATION</div>
+    <h1>{{ "Edit staff login" if staff_user else "Add staff login" }}</h1>
+    <p class="muted">Staff accounts can access orders and payments.</p>
+  </div>
+</section>
+
+<section class="panel form-panel narrow-panel">
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-grid">
+      <label class="full-width">Username
+        <input name="username" maxlength="80" autocomplete="username" required value="{{ staff_user.username if staff_user else '' }}">
+      </label>
+      <label class="full-width">{{ "New password (optional)" if staff_user else "Password" }}
+        <input type="password" name="password" minlength="12" autocomplete="new-password" {% if not staff_user %}required{% endif %}>
+      </label>
+      <label class="full-width">Confirm {{ "new " if staff_user else "" }}password
+        <input type="password" name="password_confirmation" minlength="12" autocomplete="new-password" {% if not staff_user %}required{% endif %}>
+      </label>
+    </div>
+    {% if staff_user %}
+    <p class="muted">Leave both password fields blank to keep the current password.</p>
+    {% else %}
+    <p class="muted">Use at least 12 characters. Share the password with the staff member securely.</p>
+    {% endif %}
+    <div class="form-actions">
+      <a class="button button-secondary" href="{{ url_for('staff_users') }}">Cancel</a>
+      <button class="button button-primary" type="submit">{{ "Save changes" if staff_user else "Create staff login" }}</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

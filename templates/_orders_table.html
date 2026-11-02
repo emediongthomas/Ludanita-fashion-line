@@ -1,0 +1,28 @@
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Order</th><th>Customer / item</th><th>Date</th><th>Total</th><th>Paid</th><th>Due</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for order in orders %}
+      {% set amounts = totals[order.order_id] %}
+      <tr>
+        <td><span class="order-code">{{ order.order_id }}</span></td>
+        <td><strong>{{ order.customer_name }}</strong><small class="cell-sub">{{ order.item }}{% if order.size %} · {{ order.size }}{% endif %}</small></td>
+        <td>{{ order.order_date.isoformat() }}</td>
+        <td>{{ order.order_total|money }}</td>
+        <td>{{ amounts[0]|money }}</td>
+        <td class="{% if amounts[1] > 0 %}amount-due{% endif %}">{{ amounts[1]|money }}</td>
+        <td>
+          <form method="post" action="{{ url_for('update_status', order_id=order.order_id) }}" class="status-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <select name="status" aria-label="Status for {{ order.order_id }}" onchange="this.form.submit()">
+              {% for status in order_statuses %}
+              <option value="{{ status }}" {% if order.status == status %}selected{% endif %}>{{ status }}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

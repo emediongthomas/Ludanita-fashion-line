@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Ludanita Fashion Line{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('dashboard') }}">
+      <span class="brand-mark">L</span>
+      <span>Ludanita <small>FASHION LINE</small></span>
+    </a>
+    {% if current_user.is_authenticated %}
+    <nav class="navigation" aria-label="Main navigation">
+      <a href="{{ url_for('dashboard') }}">Overview</a>
+      <a href="{{ url_for('orders') }}">Orders</a>
+      <a href="{{ url_for('payments') }}">Payments</a>
+      {% if current_user.is_admin %}
+      <a href="{{ url_for('staff_users') }}">Staff</a>
+      {% endif %}
+    </nav>
+    <div class="account">
+      <span>{{ current_user.username }}</span>
+      <form method="post" action="{{ url_for('logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="link-button" type="submit">Sign out</button>
+      </form>
+    </div>
+    {% endif %}
+  </header>
+  <main class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="messages" role="status">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">Ludanita Fashion Line <span>•</span> Order management</footer>
+  {% if auto_refresh %}
+  <script>
+    window.setTimeout(() => window.location.reload(), 30000);
+  </script>
+  {% endif %}
+</body>
+</html>

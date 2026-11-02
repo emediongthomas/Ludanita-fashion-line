@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Payments · Ludanita{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">MONEY RECEIVED</div><h1>Payments</h1><p class="muted">A shared history of customer payments.</p></div>
+  <a class="button button-primary" href="{{ url_for('new_payment') }}">＋ Record payment</a>
+</div>
+<section class="panel">
+  {% if payments %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Payment</th><th>Date</th><th>Order</th><th>Customer</th><th>Amount</th><th>Method</th><th>Reference</th></tr></thead>
+    <tbody>{% for payment in payments %}<tr>
+      <td><span class="order-code">{{ payment.payment_id }}</span></td>
+      <td>{{ payment.payment_date.isoformat() }}</td>
+      <td>{{ payment.order.order_id }}</td>
+      <td>{{ payment.order.customer_name }}</td>
+      <td><strong>{{ payment.amount|money }}</strong></td>
+      <td>{{ payment.method }}</td>
+      <td>{{ payment.reference or "—" }}</td>
+    </tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}
+  <div class="empty-state"><strong>No payments yet</strong><span>Payments you record will appear here.</span></div>
+  {% endif %}
+</section>
+{% endblock %}

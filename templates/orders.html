@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Orders · Ludanita{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">CUSTOMER WORK</div><h1>Orders</h1><p class="muted">Track production, delivery, and balances.</p></div>
+  <a class="button button-primary" href="{{ url_for('new_order') }}">＋ New order</a>
+</div>
+<section class="panel">
+  <form method="get" class="filter-bar">
+    <label class="search-field">Search orders
+      <input name="q" value="{{ search_query }}" placeholder="Customer, order ID, or item">
+    </label>
+    <label>Status
+      <select name="status">
+        <option value="">All statuses</option>
+        {% for status in order_statuses %}<option value="{{ status }}" {% if selected_status == status %}selected{% endif %}>{{ status }}</option>{% endfor %}
+      </select>
+    </label>
+    <button class="button button-secondary" type="submit">Filter</button>
+    {% if search_query or selected_status %}<a class="text-link" href="{{ url_for('orders') }}">Clear</a>{% endif %}
+  </form>
+  {% if orders %}
+    {% include "_orders_table.html" %}
+  {% else %}
+    <div class="empty-state"><strong>No matching orders</strong><span>Try changing the search or status filter.</span></div>
+  {% endif %}
+</section>
+{% endblock %}

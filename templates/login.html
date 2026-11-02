@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Ludanita{% endblock %}
+{% block content %}
+<section class="login-layout">
+  <div class="login-card">
+    <div class="eyebrow">STAFF PORTAL</div>
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to manage orders and payments.</p>
+    <form method="post" class="form-stack">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Username
+        <input name="username" autocomplete="username" required autofocus>
+      </label>
+      <label>Password
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <button class="button button-primary button-wide" type="submit">Sign in</button>
+    </form>
+    <p class="login-note">Ask your administrator to create a staff login if you need access.</p>
+  </div>
+</section>
+{% endblock %}
