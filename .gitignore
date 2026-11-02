@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+ludanita.sqlite3
+ludanita.sqlite3-*
+*.sqlite3
+*.sqlite3-*
+ludanita_orders.csv
+ludanita_payments.csv
+instance/
+.env
